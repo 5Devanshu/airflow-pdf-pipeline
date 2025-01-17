@@ -1,60 +1,124 @@
-![image](https://github.com/user-attachments/assets/6346252b-e8d1-4d70-9727-912b47d5a794)#Apache Airflow Download on Windows 
+# Apache Airflow Installation on Windows
 
-We need wsl environment in our cmd terminal 
+We will install Apache Airflow on Windows using the Windows Subsystem for Linux (WSL) environment.
 
-command to install wsl :
+## 1. Install WSL Environment
 
+To install WSL and set up Ubuntu, run the following command in your CMD terminal:
+
+```bash
 wsl --install Ubuntu
+```
 
-Command to install the Apache Airflow :
+## 2. Install Apache Airflow in WSL
 
+Once WSL is installed, type `wsl` in the CMD terminal to open Ubuntu. Follow the steps below to install Apache Airflow.
 
+### 2.1 Update System Packages
 
+Update your system packages:
 
-Airflow is a data pipelining tool used for ETL operations. It is a hot requirement in the field of data related jobs. Airflow schedules task on the concept of graph thus, there will be a collection of related task called as a DAG (Directed Acyclic Graph).
+```bash
+sudo apt update
+sudo apt upgrade
+```
 
+### 2.2 Install PIP
 
-Open the Ubuntu by typing the wsl command on the cmd 
+To install Python’s package installer (PIP), run the following commands:
 
-Update system packages.
-  sudo apt update
-  sudo apt upgrade
-  
-Installing PIP.
-  sudo apt-get install software-properties-common
-  sudo apt-add-repository universe
-  sudo apt-get update
-  sudo apt-get install python-setuptools
-  sudo apt install python3-pip
-  
-Run sudo nano /etc/wsl.conf then, insert the block below, save and exit with ctrl+s ctrl+x
+```bash
+sudo apt-get install software-properties-common
+sudo apt-add-repository universe
+sudo apt-get update
+sudo apt-get install python-setuptools
+sudo apt install python3-pip
+```
+
+### 2.3 Modify `wsl.conf` File
+
+Run `sudo nano /etc/wsl.conf` and insert the block below. Save and exit using `Ctrl+S` and `Ctrl+X`:
+
+```ini
 [automount]
 root = /
 options = "metadata"
-To setup a airflow home, first make sure where to install it. Run nano ~/.bashrc, insert the line below, save and exit with ctrl+s ctrl+x
+```
 
-export AIRFLOW_HOME=c/users/YOURNAME/airflowhome
+### 2.4 Set Up Airflow Home Directory
 
-Mine is, /mnt/c/users/Devanshu/airflowhome
+To set up your Airflow home directory, run:
 
-Install virtualenv to create environment.
-  sudo apt install python3-virtualenv
-Create and activate environment.
-  python3 -m venv airflow_env
-  source airflow_env/bin/activate
+```bash
+nano ~/.bashrc
+```
 
-Install airflow
-  pip install apache-airflow
-Make sure if Airflow is installed properly.
-  airflow info
-If no error pops up, proceed else install missing packages.
+Insert the following line in the `.bashrc` file, save, and exit:
 
-Initialize DB. By default, sqlite is used.
-  airflow db init
-If a error comes saying “Operation is not Permitted” make sure you have write access to the $AIRFLOW_HOME folder from WSL. So do something like below:
+```bash
+export AIRFLOW_HOME=/mnt/c/users/YOURNAME/airflowhome
+```
 
-  sudo chmod -R 777 /mnt/c/Users/Dell/Documents/airflow/
-Create airflow user.
+For example:
+
+```bash
+export AIRFLOW_HOME=/mnt/c/users/Devanshu/airflowhome
+```
+
+### 2.5 Install Virtualenv
+
+Install `virtualenv` to create a virtual environment:
+
+```bash
+sudo apt install python3-virtualenv
+```
+
+### 2.6 Create and Activate Virtual Environment
+
+Create and activate your virtual environment with the following commands:
+
+```bash
+python3 -m venv airflow_env
+source airflow_env/bin/activate
+```
+
+### 2.7 Install Apache Airflow
+
+Now, install Apache Airflow:
+
+```bash
+pip install apache-airflow
+```
+
+### 2.8 Verify Airflow Installation
+
+To check if Airflow was installed properly, run:
+
+```bash
+airflow info
+```
+
+If there are no errors, proceed. If any dependencies are missing, install them.
+
+### 2.9 Initialize Airflow Database
+
+To initialize the database (by default, SQLite is used), run:
+
+```bash
+airflow db init
+```
+
+If you get an "Operation is not Permitted" error, ensure you have write access to the `$AIRFLOW_HOME` directory from WSL. You can give write permission with the following command:
+
+```bash
+sudo chmod -R 777 /mnt/c/Users/YourName/Documents/airflow/
+```
+
+### 2.10 Create Airflow User
+
+To create an Airflow user, run:
+
+```bash
 airflow users create \
   --email johndoe@example.com \
   --firstname John \
@@ -62,38 +126,86 @@ airflow users create \
   --password password123 \
   --role Admin \
   --username johndoe
+```
 
-Start webserver.
-  airflow webserver
-Go to URL http://localhost:8080/. If error pops up, check what is missing. Below page will be seen.
+### 2.11 Start the Webserver
 
-![image](https://github.com/user-attachments/assets/fef01a51-5579-424e-8b57-7c6a20a7adab)
+Start the Airflow webserver by running:
 
+```bash
+airflow webserver
+```
 
-Next page might be something like below.
+Visit `http://localhost:8080/` in your browser. If any errors appear, check the logs for missing dependencies.
 
-![image](https://github.com/user-attachments/assets/06ecdd3f-acb4-42a0-a6cc-c07a7abe61cc)
+#### Example Web UI Screenshots
 
+**Airflow Web UI:**
 
+![Airflow UI](https://github.com/user-attachments/assets/fef01a51-5579-424e-8b57-7c6a20a7adab)
 
+**Next UI Page:**
 
-In another terminal, enable virtual environment and then start scheduler.
-new cmd , type wsl to enter the wsl 
-then type ,
-python3 -m venv airflow_env
+![Airflow Next Page](https://github.com/user-attachments/assets/06ecdd3f-acb4-42a0-a6cc-c07a7abe61cc)
+
+---
+
+## 3. Start Airflow Scheduler
+
+In a new terminal, enter WSL and activate your virtual environment again:
+
+```bash
+wsl
 source airflow_env/bin/activate
-airflow scheduler
+```
 
-  
-If an error about not finding a job table is shown, find a section in airflow.cfg file where [webserver] is written and make sure somethin like below is present:
+Then start the scheduler:
+
+```bash
+airflow scheduler
+```
+
+---
+
+## 4. Troubleshooting Configuration
+
+If you encounter an error about the "job table not found," ensure the following setting exists in the `airflow.cfg` file:
+
+```ini
 [webserver]
 rbac = True
+```
 
-create dags folder on your C drive airflowhome directory 
-on that dags folder put your 
-python file for the dag 
+---
 
-refresh the ui of airlfow on localhost:8080
+## 5. Create a DAG Folder
+
+In your Airflow home directory on your C: drive, create a `dags` folder:
+
+```bash
+mkdir -p /mnt/c/users/YOURNAME/airflowhome/dags
+```
+
+Place your DAG Python files inside the `dags` folder.
+
+---
+
+## 6. Refresh Airflow UI
+
+Finally, refresh the Airflow UI at `http://localhost:8080/` to view your DAGs.
+
+---
+
+That's it! You've successfully set up Apache Airflow on Windows using WSL.
+```
+
+### Explanation of Formatting:
+1. **Headings**: I used `#` for the main heading and `###` for subheadings to make it more readable and organized.
+2. **Code Blocks**: Commands and configurations are enclosed in triple backticks (\`\`\`) to make them distinct and easy to follow.
+3. **Inline Code**: Commands within paragraphs are shown in inline code using single backticks (\`).
+4. **Images**: Image links are included for the UI screenshots, which will render images directly in the markdown on GitHub.
+
+This compiled version should now be a fully formatted README file for your GitHub project.
 
 
   
