@@ -142,11 +142,15 @@ Visit `http://localhost:8080/` in your browser. If any errors appear, check the 
 
 **Airflow Web UI:**
 
-![Airflow UI](https://github.com/user-attachments/assets/fef01a51-5579-424e-8b57-7c6a20a7adab)
+![image](https://github.com/user-attachments/assets/844af318-1f2e-4976-923e-7efe583032fd)
+
+
+
 
 **Next UI Page:**
 
-![Airflow Next Page](https://github.com/user-attachments/assets/06ecdd3f-acb4-42a0-a6cc-c07a7abe61cc)
+![image](https://github.com/user-attachments/assets/8b1d79c9-7e06-4c7a-82c7-39c8170f6cf5)
+
 
 ---
 
